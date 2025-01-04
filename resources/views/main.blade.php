@@ -8,5 +8,7 @@
 </head>
 <body>
     <h1>welcome View and Blade</h1>
+    <hr>
+    <h3>the value is <?= $value ?></h3>
 </body>
 </html>

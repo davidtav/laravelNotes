@@ -80,7 +80,8 @@ class AuthController extends Controller
                 'username'=>$user->username              
             ]
             ]);
-         echo "login efetuado com sucesso";   
+        //redirect to home
+        return redirect()->to('/');
        
     }
 

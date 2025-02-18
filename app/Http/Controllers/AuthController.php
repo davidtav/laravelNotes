@@ -48,10 +48,40 @@ class AuthController extends Controller
         //$users = User::all()->toArray();
 
         // as an object instanceof the model's class
-        $userModel = new User();
-        $users = $userModel->all()->toArray();
-        echo '<pre>';
-        print_r($users);
+
+        // $userModel = new User();
+        // $users = $userModel->all()->toArray();
+        // echo '<pre>';
+        // print_r($users);
+
+
+
+
+        //check if user exist
+        $user = User::where('username',$username)->where('deleted_at',NULL)->first();
+
+
+        if(!$user){
+            return redirect()->back()->withInput()->with('loginError','Usuário ou senha incoreetos');
+        }
+        //check password
+        if(!password_verify($password,$user->password)){
+            return redirect()->back()->withInput()->with('loginError','Usuário ou senha incoreetos');
+        }   
+
+        //update last_login
+        $user->last_login = date('Y-m-d H:i:s');
+        $user->save();
+
+        //login user
+        session([
+            'user'=>[
+                'id'=>$user->id,
+                'username'=>$user->username              
+            ]
+            ]);
+         echo "login efetuado com sucesso";   
+       
     }
 
     public function logout()
